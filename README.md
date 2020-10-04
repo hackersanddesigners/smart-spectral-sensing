@@ -20,9 +20,11 @@ https://github.com/Xinyuan-LilyGO/LilyGo-T-Wristband/blob/master/examples/T-Wris
 
 ## Drivers
 
-The CP21 driver: if you have it, something like this would exist in your machine: 
+**The CP21 driver** 
 
-	Macintosh HD/Library/Extensions/SiLabsUSBDriver.kext
+if you have it, something like this would exist in your machine: 
+
+> Macintosh HD/Library/Extensions/SiLabsUSBDriver.kext
 
 **The CH340 driver**
 

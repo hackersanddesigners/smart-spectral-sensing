@@ -1,6 +1,6 @@
-#Wristband LilyGo
+# Wristband LilyGo
 
-##Download the files from github
+## Download the files from github
 
 Go to this repository and download it as a .zip file so you have everything
 https://github.com/Xinyuan-LilyGO/LilyGo-T-Wristband 
@@ -12,7 +12,7 @@ https://github.com/Xinyuan-LilyGO/LilyGo-T-Wristband/blob/master/examples/T-Wris
 
 ![](./images/version.jpg) *Note the difference to confirm which version you are using*
 
-##Drivers
+## Drivers
 
 The CP21 driver: if you have it, something like this would exist in your machine: 
 
@@ -84,7 +84,7 @@ Where you search for the library and click to install it.
 
 ![](./images/tft-espi_lib.png) *Installing a library with the library manager*
 
-###User Definitions for the TFT_eSPI lib
+### User Definitions for the TFT_eSPI lib
 
 Open the file called *User\_Setup\_Select.h* that is inside the TFT_eSPI library. 
 

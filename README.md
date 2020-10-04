@@ -1,4 +1,10 @@
-# Wristband LilyGo
+![](./images/workshopimg.jpg)*Image by Nigel*
+
+# Smart Spectral Sensing Workshop
+
+
+
+Hacking the LilyGo Wristband
 
 ## Download the files from github
 
@@ -132,12 +138,11 @@ Compile and try uploading one of the example sketches, and see if the screen is 
 **More advanced examples**
 
 - *dot* : features three mini programs you can loop through with the touch button (incl accelerometer use)
-- 
 
 
 ### Upload via Wifi
 
->>> hmmm I don't know if this is right. It works once, but when you overwrite it it cannot connect anymore soooooo
+**hmmm I don't know if this is right. It works once, but when you overwrite it it cannot connect anymore soooooo**
 
 Open the BasicOTA sketch and find line 6 and 7 where you are asked to put in your network's name and password:
 

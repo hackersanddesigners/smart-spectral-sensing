@@ -7,6 +7,9 @@ TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
 // Maximum number of generations until the screen is refreshed
 #define MAX_GEN_COUNT 500
 
+#define CF_RT24 &Roboto_Thin_24   //define custom font
+
+
 //screen orientation: 0 = portrait, add 1 to rotate clockwise by 90 degrees (0,1,2,3)
 int orientation = 1;    // for landscape
 
@@ -15,6 +18,9 @@ int TP_PIN_PIN = 33;    // touch pad (button)
 int TP_PWR_PIN = 25;    // power line to touch pad (pullup resistor)
 int screenPin = 27;     // backlight of the screen
 // pins for backlight of screen
+
+unsigned int colour = 0;    //to store HEX color values
+
 
 void setup() {
 
@@ -40,8 +46,9 @@ void loop() {
 
   if (buttonState == HIGH) {      //  if button is pressed
     digitalWrite(screenPin, HIGH);   // turn the display off)
-    
-    tft.fillScreen(TFT_VIOLET);        //set background color, specified in TFT_eSPI.h file
+
+    colour = random(0xFFFF);
+    tft.fillScreen(colour);        //set background color, specified in TFT_eSPI.h file
     tft.setTextColor(TFT_GREENYELLOW);
     tft.setTextSize(3);                //text size
     tft.setCursor(tft.width()/2-40, tft.height()/2-10);      // x,y where the word is drawn
@@ -50,7 +57,6 @@ void loop() {
     digitalWrite(screenPin, LOW);   // turn the display off)
   }
 
-  delay(50);
+  delay(1000);
 
 }
-

@@ -2,10 +2,19 @@
 #include <TFT_eSPI.h> // Hardware-specific library
 #include <SPI.h>
 
+#include "NotoSansBold15.h"
+#include "NotoSansBold36.h"
+#include "KarlaReg20.h"           // == name of the .h file (tab)
+
 TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
 
 // Maximum number of generations until the screen is refreshed
 #define MAX_GEN_COUNT 500
+
+// Define the fonts you want to use (see User_Custom_Fonts.h in TFT lib)
+#define AA_FONT_SMALL NotoSansBold15
+#define AA_FONT_LARGE NotoSansBold36
+#define KARLA_20 KarlaReg20           // == name given inside .h tab (after "const uint8_t")
 
 int x = 0;
 int y = 25;
@@ -24,6 +33,8 @@ void setup() {
 }
 
 void loop() {
+
+  tft.loadFont(KARLA_20); // Load font you want to use
   
   if (orientation == 0){
     maxSize = width-margin;
@@ -40,7 +51,7 @@ void loop() {
 //  tft.println(x);
 
    tft.setTextSize(3);                //text size
-   tft.setCursor(15, 75);      // x,y where the word is drawn
+   tft.setCursor(20, 75);      // x,y where the word is drawn
    tft.println(F("H&D"));      
 
   if (x > maxSize){
@@ -50,6 +61,8 @@ void loop() {
       }
 
     x = x + xDirection;
+
+  tft.unloadFont(); // Remove the font to recover memory used
       
   delay(50);
  

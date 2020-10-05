@@ -92,9 +92,9 @@ Where you search for the library and click to install it.
 
 ![](./images/tft-espi_lib.png) *Installing a library with the library manager*
 
-### User Definitions for the TFT_eSPI lib
+### User Definitions for the TFT\_eSPI lib
 
-Open the file called *User\_Setup\_Select.h* that is inside the TFT_eSPI library. 
+Open the file called *User\_Setup\_Select.h* that is inside the TFT\_eSPI library. 
 
 Locate line 20 that says:
 
@@ -136,6 +136,11 @@ Compile and try uploading one of the example sketches, and see if the screen is 
 - *blink*: turn the on-board LED on/off with the button
 - *touchpad_led*: turn on LED with feedback in serial
 -*animation*: displays text and a bouncing ball
+- *invertcolors*: displays text in 4 colors, invert with button
+- *fonts*: cycles through installed fonts in 6 sizes (plus a custom one)
+- *simple_clock*: shows clock and date without extra fuss
+- *ellipses*: draws random ellipses in random colors
+- *sprite*: working with objects you can repeat relative to a point
 
 **More advanced examples**
 
@@ -217,10 +222,136 @@ to reduce current consumption & heat:
 
 	// Lower MCU frequency can effectively reduce current 	consumption and heat
 	setCpuFrequencyMhz(80);
+	
+### Add custom fonts	
+
+You can add custom fonts to the TFT\_eSPI library. To do that, locate the TFT\_eSPI library and find the folder called *Tools*. In there you will find a Processing sketch that allows you to transform a font into a byte arraw you can include in your sketch.
+
+Run the Processing sketch by clicking the "play" button. It will list all the fonts on your system in a file called *System_Font_List.txt* in the sketch folder. 
+
+Open that file and locate the font you want to use. Write down the array number. Put that number in line 124 of the .pde sketch, choose a font size and run it again. You should now see your chosen font appear in the Processing window. 
+
+**Note:** fonts imported like this are not scaleable, for each font size you have to go through this process. 
+
+A .vlw file of your font is generated. You can find it in the TFT\_eSPI library folders: 
+
+> Mac HD > Users > YourName > Documents > Arduino > sketches > libraries > TFT\_eSPI > Tools > Create\_Smooth\_Font > Create Font > FontFiles
+
+**Convert the .vlw to a byte array**
+
+Make a new .h tab inside your Arduino sketch and put this in the file: 
+
+	#include <pgmspace.h>
+	
+	const uint8_t  YourFontName[] PROGMEM = {
+	
+	//YOUR BYTE ARRAY HERE
+	
+	};
+
+![](./images/locatevlw.png)*Find the vlw file inside the TFT\_eSPI library*
+
+Go to this webpage and upload your .vlw file: https://tomeko.net/online_tools/file_to_hex.php?lang=en and copy the output to your clipboard. 
+
+![](./images/converter.png)
+
+Then copy paste the byte array you just generated between the {   }; brackets where it says //YOUR BYTE ARRAY HERE
+ 
+ ![](./images/karlareg_h.png)*What it should looke like, that closing bracket and semicolong are all the way at the end*
+
+ 
+**In the Arduino sketch**
+
+Make sure there's an .h file with a byte array that defines the font. See also the *animation* to see an example. 
+
+Define and include the fonts you want to use, e.g.
+
+		#include "KarlaReg20.h"           // == name of the .h file (tab)
+		
+as well as: 
+
+		#define KARLA_20 KarlaReg20           // == name given inside .h tab (after "const uint8_t")
+		
+![](./images/karlareg_include.png)* define the font using the same name as the one in the .h file (see highlighted)*
+
+(in the void loop) Load the font before you want to use it.
+
+		tft.loadFont(KARLA_20); // Load font you want to use
+	  
+(in the void loop) Unload the font before the end of the loop. 
+
+		tft.unloadFont(); // Remove the font to recover memory used
+
+### Some supported commands
+
+**Text alignment**
+
+	  tft.setTextDatum(TL_DATUM); // for Top Left datum
+	  
+Other options to play with:
+
+* TL_DATUM = Top left (default)
+* TC_DATUM = Top centre
+* TR_DATUM = Top right
+
+* ML_DATUM = Middle left
+* MC_DATUM = Middle centre
+* MR_DATUM = Middle right
+
+* BL_DATUM = Bottom left
+* BC_DATUM = Bottom centre
+* BR_DATUM = Bottom right
+
+* L_BASELINE = Left character baseline (Line the 'A' character would sit on)
+* C_BASELINE = Centre character baseline
+* R_BASELINE = Right character baseline
+
+**Set padding**
+
+		tft.setTextPadding(0); // Setting to zero switches off the padding
+
+
+**Various**
+
+* Print line to screen
+
+		tft.println("print a sentence plus a newline");
+
+* Draw a string (text, x, y, font)
+
+		  tft.drawString("text here", 0, 0, 2);
+
+* Draw a character (character, x, y, size)
+
+		  tft.drawChar(127, 10, 10, 2);
+
+* Set text wrap
+
+		tft.setTextWrap(true); // Wrap on width
+		tft.setTextWrap(true, true); // Wrap on width + height
+
+* Change the font colour and the background colour
+
+		  tft.setTextColor(TFT_YELLOW, TFT_BLACK); 
+		
+* Give background fill
+
+		  tft.fillScreen(TFT_BLACK);
+
+		
+* Draw a filled rectangle at specified coordinates
+
+		    tft.fillRect (50, 90, 60, 40, TFT_BLACK); 
+		
+* Set text size 
+
+		tft.setTextSize(1);
+
+
 
 ### Color 
 
-You can define colors in the *TFT_eSPI.h* file, which you can now find in the library folder. These are already specified: 
+You can define colors in the *TFT\_eSPI.h* file, which you can now find in the library folder. These are already specified: 
 
 * TFT_BLACK
 * TFT_NAVY
@@ -278,7 +409,9 @@ You can define colors in the *TFT_eSPI.h* file, which you can now find in the li
 
 ##To Find Out
 
-### How to add new fonts
 ### List devices/networks
 ### Send each other coordinates?
+### Let a sprite/image move with sensordata
+### Wearable wifi zine 
+### upload jpgs with SPIFFS
 

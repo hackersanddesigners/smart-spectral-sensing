@@ -3,8 +3,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-const char* ssid = "INSERT NETWORK NAME";
-const char* password = "INSERT PASSWORD";
+const char* ssid = "TMNL-3D1001";
+const char* password = "66NW7MF9N4AMYWFH";
 
 void setup() {
   Serial.begin(115200);

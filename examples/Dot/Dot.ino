@@ -288,7 +288,7 @@ void IMU_Show_Ball()            // function where ball is positioned in coordina
 #else
   tft.setCursor(0, 0);
   tft.setTextColor(TFT_RED, TFT_BLACK);
-  tft.println("Sensor is not enable");
+  tft.println("Sensor is not enabled");
   delay(200);
 #endif
 

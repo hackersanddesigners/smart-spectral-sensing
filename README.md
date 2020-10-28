@@ -147,6 +147,7 @@ Compile and try uploading one of the example sketches, and see if the screen is 
 **More advanced examples**
 
 - _dot_ : features three mini programs you can loop through with the touch button (incl accelerometer use)
+- _Mac_address_colors_ : Scans for wifi devices nearby and displays the MAC addresses of those devices as a color gradient
 
 ### Upload via Wifi
 

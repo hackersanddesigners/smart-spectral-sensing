@@ -209,8 +209,8 @@ void loop() {
   esp_wifi_init(&cfg);
   //Serial.println("Enable WiFi");
   // set WiFi in promiscuous mode
-  //esp_wifi_set_mode(WIFI_MODE_STA);            // Promiscuous works only with station mode
-  esp_wifi_set_mode(WIFI_MODE_NULL);
+  esp_wifi_set_mode(WIFI_MODE_STA);            // Promiscuous works only with station mode
+//  esp_wifi_set_mode(WIFI_MODE_NULL);
   // power save options
   esp_wifi_set_ps(WIFI_PS_MAX_MODEM);
   esp_wifi_set_storage(WIFI_STORAGE_RAM);

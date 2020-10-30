@@ -19,11 +19,12 @@ https://github.com/Xinyuan-LilyGO/LilyGo-T-Wristband/blob/master/examples/T-Wris
 
 ## Drivers
 
-**The CP21 driver**
+The programmer board _probably_ uses the CH340 USB to Serial chip, if you don't have the driver for this chip you need to install them. If it doesn't work, try installing the CP21xx driver as well.
 
-if you have it, something like this would exist in your machine:
+[CH340 Drivers](http://www.wch-ic.com/search?q=ch340&t=downloads)
+[CP21xx Drivers](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
 
-> Macintosh HD/Library/Extensions/SiLabsUSBDriver.kext
+### MacOS
 
 **The CH340 driver**
 
@@ -38,6 +39,17 @@ Then list the usb drivers
 If you see _usb.kext_ or _usbserial.kext_ it means you have TCH340 driver files installed. If not: go through this tutorial to install (uninstalling is also described here):
 
 https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all#mac-osx
+
+**The CP21 driver**
+
+if you have it, something like this would exist in your machine:
+
+> Macintosh HD/Library/Extensions/SiLabsUSBDriver.kext
+
+### Windows
+
+On Windows 10 the driver should install automatically, otherwise follow the instructions here:
+https://github.com/Xinyuan-LilyGO/LilyGo-T-Wristband/blob/master/examples/T-Wristband-MPU9250/README.MD
 
 ### Install board files for ESP32 (if necessary)
 
@@ -65,7 +77,7 @@ Restart Arduino and check if you can find the board now
 
 ## Install the libraries dependencies
 
-Find the folder called _libdeps_, and copy paste its contents to your Arduino Library folder. Mine is in:
+Find the folder called _libdeps_ in the LilyGo wristband repository, and copy paste its contents to your Arduino Library folder. Mine is in:
 
     Macintosh HD > Users > [username] > Documents > Arduino > sketches > libraries
 
@@ -89,6 +101,8 @@ Where you search for the library and click to install it.
 ![](./images/tft-espi_lib.png) _Installing a library with the library manager_
 
 ### User Definitions for the TFT_eSPI lib
+
+_You only need to do this if you installed the TFT_eSPI library through the Library Manager, if you copied it as above this step us unnecessary!_
 
 Open the file called _User_Setup_Select.h_ that is inside the TFT_eSPI library.
 
@@ -124,7 +138,7 @@ Watch this vid to see how https://www.youtube.com/watch?v=fNtdHYDsplc
 
 ### Upload an example sketch
 
-Compile and try uploading one of the example sketches, and see if the screen is programmed correctly. <br />
+Compile and try uploading one of the example sketches from this repository, and see if the screen is programmed correctly. <br />
 
 **Problems uploading?**
 

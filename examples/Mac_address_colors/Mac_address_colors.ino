@@ -1,16 +1,16 @@
-/* 
- *   Based this project: https://www.hackster.io/ferrithemaker/covid-19-personal-cumulative-risk-dosimeter-624019
- *   
- *   This sketch makes the ESP32 scan for wifi devices and creates a list of nearby devices.
- *   Each Wifi device has a unique number called the MAC address. This number is formatted like:
- *   XX.XX.XX.XX.XX.XX where each X is a hexadecimal number. 
- *   We chop the MAC address into two pieces and use that as color representing the device.
- *   So for example ff:0f:24:2e:6a:c9 = #ff0f24 and #2E6AC9. 
- *   The wristband displays all the wifi devices it was in contact with recently as gradients 
- *   of their MAC address colors.
- *   To preserve the battery the devices sleeps 10 seconds after showing the colors. 
- *   It may take a few cycles for devices to show up. 
- */
+/*
+     Based this project: https://www.hackster.io/ferrithemaker/covid-19-personal-cumulative-risk-dosimeter-624019
+
+     This sketch makes the ESP32 scan for wifi devices and creates a list of nearby devices.
+     Each Wifi device has a unique number called the MAC address. This number is formatted like:
+     XX.XX.XX.XX.XX.XX where each X is a hexadecimal number.
+     We chop the MAC address into two pieces and use that as color representing the device.
+     So for example ff:0f:24:2e:6a:c9 = #ff0f24 and #2E6AC9.
+     The wristband displays all the wifi devices it was in contact with recently as gradients
+     of their MAC address colors.
+     To preserve the battery the devices sleeps 10 seconds after showing the colors.
+     It may take a few cycles for devices to show up.
+*/
 
 #include <Arduino.h>
 
@@ -210,7 +210,7 @@ void loop() {
   //Serial.println("Enable WiFi");
   // set WiFi in promiscuous mode
   esp_wifi_set_mode(WIFI_MODE_STA);            // Promiscuous works only with station mode
-//  esp_wifi_set_mode(WIFI_MODE_NULL);
+  //  esp_wifi_set_mode(WIFI_MODE_NULL);
   // power save options
   esp_wifi_set_ps(WIFI_PS_MAX_MODEM);
   esp_wifi_set_storage(WIFI_STORAGE_RAM);
@@ -238,11 +238,11 @@ void loop() {
       String mac = listOfMAC[ i ].getMAC();
       uint32_t color1 = MACToColor( mac, false );
       uint32_t color2 = MACToColor( mac, true );
-      
+
       // fill screen with two rects in the colors
       //      tft.fillRect( 0, 0, tft.width() / 2, tft.height(), color1 );
       //      tft.fillRect(tft.width() / 2, 0, tft.width() / 2, tft.height(), color2 );
-      
+
       // fill the screen with a gradient between the two colors
       drawGradient( color1, color2 );
       tft.setCursor(0, 0, 2);
@@ -260,10 +260,10 @@ void loop() {
   delay(100);
 }
 
-/* 
- * Tries (but fails sometimes) to draw a gradient  
- * between the two colors.
- */
+/*
+   Tries (but fails sometimes) to draw a gradient
+   between the two colors.
+*/
 void drawGradient( int color1, int color2 ) {
   uint8_t r1, g1, b1, r2, g2, b2;
   r1 = (color1 >> 8) & 0xF8; r1 |= (r1 >> 5); // rgb565 to 8bit values

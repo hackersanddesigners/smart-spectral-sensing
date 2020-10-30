@@ -86,7 +86,7 @@ Find the folder called _libdeps_ in the LilyGo wristband repository, and copy pa
 - **pcf8563.h** controls the clock chip
 - **SparkFun_LSM9DS1_Arduino_Library** to control the sensor
 - **TFT_eSPI** library to put the graphics on the display (using SPI communication protocol)
-- **WiFiManager** allows you to program the board via wifi (not explained here).
+- **WiFiManager** allows you connect the ESP module to the wifi in a graphical interface
 
 If you are not sure where to find these, alternatively you can compress each library folder into its own .zip file.
 
@@ -144,7 +144,7 @@ Compile and try uploading one of the example sketches from this repository, and 
 
 1. Sometimes it may be necessary to hold down the 'boot' button on the programmer board when the console displays the text 'Connecting...'.<br />
 2. If you are getting an error during uploading you may try to lower the upload speed, by going to the menu 'Tools' > 'Upload Speed'.<br />
-   The default value is 196200, but 460800 sometimes works more reliably.
+   The default value is 921600, but 460800 seems to works more reliably.
 
 **Simple examples**
 

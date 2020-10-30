@@ -160,7 +160,7 @@ Compile and try uploading one of the example sketches from this repository, and 
 
 **More advanced examples**
 
-- _dot_ : features three mini programs you can loop through with the touch button (incl accelerometer use)
+- _dot_ : Displays the accelerometer data and draws a little ball that can be balanced by moving the wristband.
 - _Mac_address_colors_ : Scans for wifi devices nearby and displays the MAC addresses of those devices as a color gradient
 
 ### Upload via Wifi

@@ -1,4 +1,9 @@
-
+/*
+ * This example displays the accelerometer data and draws 
+ * a little ball that can be balanced by moving the wristband.
+ * 
+ * Move the wristband in all directions to calibrate
+ */
 #include <TFT_eSPI.h> // Graphics and font library for ST7735 driver chip
 #include <SPI.h>
 #include <Wire.h>

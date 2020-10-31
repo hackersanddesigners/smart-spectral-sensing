@@ -64,7 +64,8 @@ If not: add this url to your Additional Board Manager URLS. To do that, in the A
 > File > Preferences
 
 And paste the following link into the box that says "Additional Board Manager URLs:
-https://dl.espressif.com/dl/package_esp32_index.json, http://arduino.esp8266.com/stable/package_esp8266com_index.json
+https://dl.espressif.com/dl/package_esp32_index.json
+
 ![adding an URL to the board manager](./images/boardsmanager.png)
 
 Then go to

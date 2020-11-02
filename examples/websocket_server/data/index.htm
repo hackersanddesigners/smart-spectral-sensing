@@ -1,0 +1,276 @@
+<!--
+  FSWebServer - Example Index Page
+  Copyright (c) 2015 Hristo Gochkov. All rights reserved.
+  This file is part of the ESP8266WebServer library for Arduino environment.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>WebSocketTester</title>
+    <style type="text/css" media="screen">
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      #dbg,
+      #input_div,
+      #input_el {
+        font-family: monaco;
+        font-size: 12px;
+        line-height: 13px;
+        color: #aaa;
+      }
+
+      #dbg,
+      #input_div {
+        margin: 0;
+        padding: 0;
+        padding-left: 4px;
+      }
+
+      #input_el {
+        width: 98%;
+        background-color: rgba(0, 0, 0, 0);
+        border: 0px;
+      }
+      #input_el:focus {
+        outline: none;
+      }
+    </style>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript">
+      var ws = null;
+      var acc_x = [];
+      var acc_y = [];
+      var acc_z = [];
+      var mag_x = [];
+      var mag_y = [];
+      var mag_z = [];
+      var gyr_x = [];
+      var gyr_y = [];
+      var gyr_z = [];
+      var chart_mag, chart_acc, chart_gyr;
+
+      function ge(s) {
+        return document.getElementById(s);
+      }
+      function ce(s) {
+        return document.createElement(s);
+      }
+      function stb() {
+        window.scrollTo(
+          0,
+          document.body.scrollHeight || document.documentElement.scrollHeight
+        );
+      }
+      function sendBlob(str) {
+        var buf = new Uint8Array(str.length);
+        for (var i = 0; i < str.length; ++i) buf[i] = str.charCodeAt(i);
+        ws.send(buf);
+      }
+      function addMessage(m) {
+        var msg = ce("div");
+        msg.innerText = m;
+        ge("dbg").appendChild(msg);
+        stb();
+      }
+      function startSocket() {
+        ws = new WebSocket("ws://" + document.location.host + "/ws", [
+          "arduino",
+        ]);
+        ws.binaryType = "arraybuffer";
+        ws.onopen = function (e) {
+          addMessage("Connected");
+        };
+        ws.onclose = function (e) {
+          addMessage("Disconnected");
+        };
+        ws.onerror = function (e) {
+          console.log("ws error", e);
+          addMessage("Error");
+        };
+        ws.onmessage = function (e) {
+          var msg = "";
+          if (e.data instanceof ArrayBuffer) {
+            msg = "BIN:";
+            var bytes = new Uint8Array(e.data);
+            for (var i = 0; i < bytes.length; i++) {
+              msg += String.fromCharCode(bytes[i]);
+            }
+          } else {
+            // msg = "TXT:" + e.data;
+            console.log(data);
+            var data = JSON.parse(e.data);
+
+            var l = acc_x.length + 1;
+            // PLOT THE DATA
+            acc_x.push({ x: l, y: data.acc.x });
+            acc_y.push({ x: l, y: data.acc.y });
+            acc_z.push({ x: l, y: data.acc.z });
+
+            mag_x.push({ x: l, y: data.mag.x });
+            mag_y.push({ x: l, y: data.mag.y });
+            mag_z.push({ x: l, y: data.mag.z });
+
+            gyr_x.push({ x: l, y: data.gyr.x });
+            gyr_y.push({ x: l, y: data.gyr.y });
+            gyr_z.push({ x: l, y: data.gyr.z });
+
+            if (l > 300) {
+              acc_x.shift();
+              acc_y.shift();
+              acc_z.shift();
+
+              mag_x.shift();
+              mag_y.shift();
+              mag_z.shift();
+
+              gyr_x.shift();
+              gyr_y.shift();
+              gyr_z.shift();
+            }
+
+            console.log(data.acc.x, data.mag.x, data.gyr.x);
+
+            chart_mag.render();
+            chart_gyr.render();
+            chart_acc.render();
+          }
+          addMessage(msg);
+        };
+        ge("input_el").onkeydown = function (e) {
+          stb();
+          if (e.keyCode == 13 && ge("input_el").value != "") {
+            ws.send(ge("input_el").value);
+            ge("input_el").value = "";
+          }
+        };
+      }
+      function startEvents() {
+        var es = new EventSource("/events");
+        es.onopen = function (e) {
+          addMessage("Events Opened");
+        };
+        es.onerror = function (e) {
+          if (e.target.readyState != EventSource.OPEN) {
+            addMessage("Events Closed");
+          }
+        };
+        es.onmessage = function (e) {
+          addMessage("Event: " + e.data);
+        };
+        es.addEventListener(
+          "ota",
+          function (e) {
+            addMessage("Event[ota]: " + e.data);
+          },
+          false
+        );
+      }
+      function onBodyLoad() {
+        startSocket();
+        startEvents();
+
+        // accelerometer
+        chart_acc = new CanvasJS.Chart("chart-acc", {
+          title: {
+            text: "IMU ACC",
+          },
+          data: [
+            {
+              type: "line",
+              dataPoints: acc_x,
+            },
+            {
+              type: "line",
+              dataPoints: acc_y,
+            },
+            {
+              type: "line",
+              dataPoints: acc_z,
+            },
+          ],
+        });
+        chart_acc.render();
+
+        // magnetometer
+        chart_mag = new CanvasJS.Chart("chart-mag", {
+          title: {
+            text: "IMU MAG",
+          },
+          data: [
+            {
+              type: "line",
+              dataPoints: mag_x,
+            },
+            {
+              type: "line",
+              dataPoints: mag_y,
+            },
+            {
+              type: "line",
+              dataPoints: mag_z,
+            },
+          ],
+        });
+        chart_mag.render();
+
+        // gyro
+        chart_gyr = new CanvasJS.Chart("chart-gyr", {
+          title: {
+            text: "IMU GYR",
+          },
+          data: [
+            {
+              type: "line",
+              dataPoints: gyr_x,
+            },
+            {
+              type: "line",
+              dataPoints: gyr_y,
+            },
+            {
+              type: "line",
+              dataPoints: gyr_z,
+            },
+          ],
+        });
+        chart_gyr.render();
+      }
+    </script>
+  </head>
+  <body id="body" onload="onBodyLoad()">
+    <pre id="dbg"></pre>
+    <div id="input_div">$<input type="text" value="" id="input_el" /></div>
+    <div
+      id="chart-acc"
+      class="container"
+      style="width: 600px; height: 250px; position: fixed; right: 0; top: 0"
+    ></div>
+    <div
+      id="chart-mag"
+      class="container"
+      style="width: 600px; height: 250px; position: fixed; right: 0; top: 250px"
+    ></div>
+    <div
+      id="chart-gyr"
+      class="container"
+      style="width: 600px; height: 250px; position: fixed; right: 0; top: 500px"
+    ></div>
+  </body>
+</html>

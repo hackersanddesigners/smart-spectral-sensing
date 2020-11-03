@@ -1,4 +1,4 @@
-### Websocket server on your wrist
+# Websocket server on your wrist
 
 This is a very rough first version. YMMV.
 
@@ -7,15 +7,18 @@ The browser makes a websocket connection to the wristband and the wristband will
 For now the data get displayed as a graph, but you can use this as a starting point for generating sounds for example.<br/>
 The band get super hot and the battery life will be terrible. It can probably be improved a lot, but don't expect too much, you're running a webserver :)
 
-## Libraries
+## Installation
+
+### Install these libraries
 
 - TaskScheduler - install through the library manager > Sketch - Libraries > Library Manager.
 - ArduinoJson - install as above
-- ESPAsyncWebServer - Download https://github.com/me-no-dev/ESPAsyncWebServer and move it to your Arduino libraries directory
-  I think SPIFFS is part of ESPAsyncWebServer.<br />
-  The other libraries should already be installed, otherwise search for them in the library manager.
+- ESPAsyncWebServer - Download [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) and move it to your Arduino libraries directory. I think SPIFFS is part of ESPAsyncWebServer.
+- You might also need [AsyncTCP](https://github.com/me-no-dev/AsyncTCP). Installation is the same as with ESPAsyncWebServer.
 
-## WIFI
+The other libraries should already be installed, otherwise search for them in the library manager.
+
+### Configure WIFI
 
 Change the lines:
 
@@ -24,15 +27,15 @@ Change the lines:
 
 to represent your network settings.
 
-## Uploading the site
+### Uploading the site
 
-The website we're serving will run of the Flash memory on the ESP32.
+The website we're serving will run of the Flash memory on the ESP32. These files need to be uploaded first by using the ESP32FS plugin for the Arduino IDE. Follow [the instructions here](https://github.com/me-no-dev/arduino-esp32fs-plugin#installation).
 
-To install the plugin follow the instructions here:
-https://github.com/me-no-dev/arduino-esp32fs-plugin#installation
+After installation you can select Tools > ESP32 Sketch data upload. This will upload the /data directory inside your sketch folder.
 
-After installation you can select Tools > ESP32 Sketch data upload. This will upload the /data directory inside our sketch folder.
+### Find the IP address of your wristband
+Your wristband will connect to the configured wifi. To find your IP look in the serial console of the Arduino IDE or check your DHCP client. Open up this ip in a webbrowser to view the IMU graphs.
 
 ## Editing the site.
 
-To make editing easier, you can connect to http://<your_server_up>/edit to edit pages later. Username and pass are both 'admin'.
+To make editing easier, you can connect to `http://<your_server_up>/edit` to edit pages later. Username and pass are both 'admin'. Note that you can change user/pass in the same block as where you configure your wifi details. 
